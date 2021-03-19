@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
-from restapi.models import *
-
 class Courier(models.Model):
   identifier = models.IntegerField()
   category = models.CharField(max_length=10)
@@ -18,8 +16,9 @@ class Courier(models.Model):
       return 50
 
   def order_acceptance(self, order):
+    #import pdb; pdb.set_trace()
     if order.region not in self.regions: return False
-    if self.weight_capacity < order.weight: return False
+    if self.weight_capacity() < order.weight: return False
     if not self.__order_time_acceptance(order.delivery_hours): return False
 
     return True
@@ -49,8 +48,8 @@ class Courier(models.Model):
 
   def as_json(self):
     return {
-      "id": self.identifier,
-      "category": self.category,
+      "courier_id": self.identifier,
+      "courier_type": self.category,
       "regions": self.regions,
       "working_hours": self.working_hours
     }

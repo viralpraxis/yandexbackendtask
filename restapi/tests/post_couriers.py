@@ -1,7 +1,7 @@
-from django.test import TestCase, Client
-
 import json
 import os
+
+from django.test import TestCase, Client
 
 class PostCouriersTest(TestCase):
   client = Client()
@@ -45,7 +45,6 @@ class PostCouriersTest(TestCase):
 
     self.assertEqual(response.status_code, 201)
     self.assertEqual(json.loads(response.content), expected_response_body)
-
 
   def __do_request(self, body):
     return self.client.post("/couriers", body, content_type="application/json")

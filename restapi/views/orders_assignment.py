@@ -1,6 +1,6 @@
 import json
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views import View
 from django.shortcuts import render
 
@@ -11,30 +11,33 @@ class OrdersAssignmentView(View):
   http_methods_allowed = ['post']
 
   def post(self, request, *args, **kwargs):
-    courier = self.__find_courier(kwargs['courier_id'])
+    parsed_request_body = json.loads(request.body)
+
+    courier = self.__find_courier(parsed_request_body["courier_id"])
     if not(courier): return HttpResponse(status=400)
 
-    orders = Order.objects.filter(status='pending')
-    orders = filter(courier.order_acceptance, orders)
+    orders = Order.objects.filter(status=Order.PENDING)
 
-    # TODO: wrap via transaction
-    orders.update(courier=courier, status=Order.ASSIGNED)
+    # TODO: transaction wrapper
+    assigned_orders_ids = []
+    for order in orders:
+      if not courier.order_acceptance(order): continue
+      assigned_orders_ids.append(order.identifier)
 
-    return self.__render_http_200(orders)
+      order.courier = courier
+      order.status = Order.ASSIGNED
+      order.save()
 
-  def __render_http_200(self, orders):
-    orders_ids = list(map(lambda x : { "id": x }, orders))
+    return self.__render_http_200(assigned_orders_ids)
+
+  def __render_http_200(self, orders_ids):
     # TODO: RFC 3339
     response_body = {
-      "orders": orders_ids,
+      "orders": helpers.format_id_array(orders_ids),
       "assign_time": "TIME PLACEHOLDER"
     }
 
-    return HttpResponse(
-      response_body,
-      content_type="application/json",
-      status=200
-    )
+    return JsonResponse(response_body)
 
   def __find_courier(self, courier_id):
     try:

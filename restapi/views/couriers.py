@@ -5,7 +5,7 @@ from django.views import View
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
-from restapi.models import Courier
+from restapi.models import Courier, Order
 import restapi.helpers as helpers
 
 class CourierView(View):
@@ -35,14 +35,24 @@ class CourierView(View):
   def patch(self, request, *args, **kwargs):
     request_body = json.loads(request.body)
 
-    if not self.__validate_patch_request_body(request_body):
-      return HttpResponse(status=400)
+    if not self.__validate_patch_request_body(request_body): return HttpResponse(status=400)
 
-    courier = Courier.objects.filter(identifier=kwargs["id"])[0]
+    courier = Courier.objects.get(identifier=kwargs["id"])
+    if "courier_type" in request_body: courier.category = request_body["courier_type"]
+    if "regions" in request_body: courier.regions = request_body["regions"]
+    if "working_hours" in request_body: courier.working_hours = request_body["working_hours"]
+    courier.save()
 
-    # TODO: implement logic
+    orders = Order.objects.filter(status=Order.ASSIGNED, courier=courier)
+    for order in orders:
+      # import pdb;pdb.set_trace()
+      if courier.order_acceptance(order): continue
 
-    return HttpResponse(courier.as_json())
+      order.status = Order.PENDING
+      order.courier = None
+      order.save()
+
+    return JsonResponse(courier.as_json())
 
   def __validate_post_request_body(self, request_body):
     entry_fields = ['courier_id', 'courier_type', 'regions', 'working_hours']

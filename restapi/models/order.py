@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
-from restapi.models import *
-
 class Order(models.Model):
   MIN_ACCEPTABLE_WEIGHT = 0.01
   MAX_ACCEPTABLE_WEIGHT = 50
@@ -17,7 +15,7 @@ class Order(models.Model):
     (COMPLETED, "Complted")
   ]
 
-  courier = models.ForeignKey(Courier, null=True, on_delete=models.CASCADE)
+  courier = models.ForeignKey('Courier', null=True, on_delete=models.CASCADE)
   identifier = models.IntegerField()
   weight = models.FloatField()
   region = models.IntegerField()

@@ -1,6 +1,7 @@
 from django.db import models
-
 from django.contrib.postgres.fields import ArrayField
+
+from restapi.models import *
 
 class Courier(models.Model):
   identifier = models.IntegerField()
@@ -18,6 +19,7 @@ class Courier(models.Model):
 
   def order_acceptance(self, order):
     if order.region not in self.regions: return False
+    if self.weight_capacity < order.weight: return False
     if not self.__order_time_acceptance(order.delivery_hours): return False
 
     return True
@@ -52,4 +54,3 @@ class Courier(models.Model):
       "regions": self.regions,
       "working_hours": self.working_hours
     }
-

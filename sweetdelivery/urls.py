@@ -1,8 +1,11 @@
 from django.contrib import admin
 from django.urls import path
 
-from restapi import views as restapi_views
+from restapi.views import *
 
 urlpatterns = [
-    path("couriers", restapi_views.create)
+    path("couriers", CourierView.as_view()),
+    path("couriers/<int:id>", CourierView.as_view()),
+    path("orders", OrderView.as_view()),
+    path("orders/assign", OrdersAssignmentView.as_view())
 ]

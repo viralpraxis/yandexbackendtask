@@ -1,0 +1,41 @@
+{
+   "data":[
+      {
+         "courier_id":1,
+         "courier_type":"foot",
+         "regions":[
+            1337,
+            420,
+            42
+         ],
+         "working_hours":[
+           "10:20-20:20"
+         ]
+      },
+      {
+         "courier_id":2,
+         "courier_type":"bike",
+         "regions":[
+            1337,
+            420,
+            42
+         ],
+         "working_hours":[
+            "10:20-20:20"
+         ]
+      },
+      {
+         "courier_id": 3,
+         "courier_type":"foot",
+         "regions":[
+           42,
+           12,
+           123213
+         ],
+         "working_hours":[
+            "10:20-20:20",
+            "03:10-08:00"
+         ]
+      }
+   ]
+}

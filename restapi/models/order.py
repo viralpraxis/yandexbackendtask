@@ -27,3 +27,9 @@ class Order(models.Model):
     default=PENDING
    )
   completed_at = models.CharField(max_length=50, null=True)
+
+  def complete(self, completed_at):
+    self.status = "COMPLETED"
+    self.completed_at = completed_at
+
+    self.save()

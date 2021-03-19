@@ -49,6 +49,6 @@ class PostOrdersAssignTest(TestCase):
     self.assertEqual(response_body["orders"], [])
     self.assertEqual(response.status_code, 200)
 
-  def __do_request(self, response_body):
-    return self.client.post("/orders/assign", response_body, content_type="application/json")
+  def __do_request(self, request_body):
+    return self.client.post("/orders/assign", request_body, content_type="application/json")
 

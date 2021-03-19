@@ -21,7 +21,7 @@ class PatchCouriersTest(TestCase):
 
     for order in orders: order.save()
 
-  def testMarksOrdersAsUnassignedIfRequired(self):
+  def test_marks_rrders_as_unassigned_if_required(self):
     request_body = open(os.path.dirname(__file__) + '/fixtures/patch_couriers_1.json').read()
     response = self.__do_request(request_body)
 

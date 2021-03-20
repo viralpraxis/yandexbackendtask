@@ -45,12 +45,8 @@ class CourierView(View):
 
     orders = Order.objects.filter(status=Order.ASSIGNED, courier=courier)
     for order in orders:
-      # import pdb;pdb.set_trace()
-      if courier.order_acceptance(order): continue
-
-      order.status = Order.PENDING
-      order.courier = None
-      order.save()
+      if not(courier.order_acceptance(order)):
+        order.unassign()
 
     return JsonResponse(courier.as_json())
 

@@ -21,12 +21,9 @@ class OrdersAssignmentView(View):
     # TODO: transaction wrapper
     assigned_orders_ids = []
     for order in orders:
-      if not courier.order_acceptance(order): continue
-      assigned_orders_ids.append(order.identifier)
-
-      order.courier = courier
-      order.status = Order.ASSIGNED
-      order.save()
+      if courier.order_acceptance(order):
+        assigned_orders_ids.append(order.identifier)
+        order.assign_courier(courier)
 
     return self.__render_http_200(assigned_orders_ids)
 

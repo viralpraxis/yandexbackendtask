@@ -2,18 +2,37 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
 class Courier(models.Model):
+  FOOT = "foot"
+  BIKE = "bike"
+  CAR = "car"
+
+  CATEGORY_CHOICES = [
+    (FOOT, "Foot"),
+    (BIKE, "Bike"),
+    (CAR, "Car")
+  ]
+
   identifier = models.IntegerField()
-  category = models.CharField(max_length=10)
+  category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
   regions = ArrayField(models.IntegerField())
   working_hours = ArrayField(models.CharField(max_length=25))
 
   def weight_capacity(self):
-    if self.category == "foot":
-      return 10
-    elif self.category == "bike":
-      return 15
-    else:
-      return 50
+    if self.category == self.FOOT: return 10
+    elif self.category == self.BIKE: return 15
+    else: return 50
+
+  def rating(self):
+    # TODO: implement logic
+    return 5.0
+
+  def earnings(self):
+    earnings = 0
+    orders = Order.objects.filter(courier=self, status=Order.COMPLETED)
+
+    for order in orders: earnings = earnings + order.salary()
+
+    return earnings
 
   def order_acceptance(self, order):
     #import pdb; pdb.set_trace()

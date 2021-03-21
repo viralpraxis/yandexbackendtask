@@ -1,5 +1,4 @@
-import json
-import os
+import os, json
 
 from django.test import TestCase, Client
 

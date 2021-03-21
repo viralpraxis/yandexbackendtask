@@ -17,7 +17,7 @@ class Order(models.Model):
   STATUS_CHOICES = [
     (PENDING, "Pending"),
     (ASSIGNED, "Assigned"),
-    (COMPLETED, "Complted")
+    (COMPLETED, "Complited")
   ]
 
   identifier = models.IntegerField()
@@ -41,7 +41,7 @@ class Order(models.Model):
   def assign_courier(self, courier):
     self.courier = courier
     self.courier_category = courier.category
-    self.status = self.ASSIGNED
+    self.status = ASSIGNED
     self.assigned_at = datetime.datetime.utcnow().isoformat() + "Z"
 
     self.save()
@@ -49,13 +49,13 @@ class Order(models.Model):
   def unassign(self):
     self.courier = None
     self.courier_category = None
-    self.status = self.PENDING
+    self.status = PENDING
     self.assigned_at = None
 
     self.save()
 
   def complete(self, completed_at):
-    self.status = self.COMPLETED
+    self.status = COMPLETED
     self.completed_at = completed_at
 
     self.save()

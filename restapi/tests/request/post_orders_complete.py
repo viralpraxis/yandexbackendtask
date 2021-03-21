@@ -22,13 +22,13 @@ class PostOrdersCompleteTest(TestCase):
     for entry in [*couriers, *orders]: entry.save()
 
   def test_renders_http_400_for_pending_order(self):
-    request_body = open(os.path.dirname(__file__) + '/fixtures/post_orders_complete_1.json').read()
+    request_body = open(os.path.dirname(__file__) + "/fixtures/post_orders_complete_1.json").read()
     response = self.__do_request(request_body)
 
     self.assertEqual(response.status_code, 400)
 
   def test_renders_order_id_for_completed_by_target_courier_order(self):
-    request_body = open(os.path.dirname(__file__) + '/fixtures/post_orders_complete_2.json').read()
+    request_body = open(os.path.dirname(__file__) + "/fixtures/post_orders_complete_2.json").read()
     response = self.__do_request(request_body)
 
     expected_response_body = {
@@ -39,7 +39,7 @@ class PostOrdersCompleteTest(TestCase):
     self.assertEqual(json.loads(response.content), expected_response_body)
 
   def test_renders_order_id_and_completes_assigned_to_target_courier_order(self):
-    request_body = open(os.path.dirname(__file__) + '/fixtures/post_orders_complete_3.json').read()
+    request_body = open(os.path.dirname(__file__) + "/fixtures/post_orders_complete_3.json").read()
     response = self.__do_request(request_body)
 
     expected_response_body = {
@@ -51,7 +51,7 @@ class PostOrdersCompleteTest(TestCase):
     self.assertTrue(Order.objects.get(identifier=1).completed_at is not None)
 
   def test_renders_http_400_for_assigned_to_decoy_courier_order(self):
-    request_body = open(os.path.dirname(__file__) + '/fixtures/post_orders_complete_4.json').read()
+    request_body = open(os.path.dirname(__file__) + "/fixtures/post_orders_complete_4.json").read()
     response = self.__do_request(request_body)
 
     self.assertEqual(response.status_code, 400)

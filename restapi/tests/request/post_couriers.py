@@ -7,7 +7,7 @@ class PostCouriersTest(TestCase):
   client = Client()
 
   def test_renders_http_400_on_missing_entries_attributes(self):
-    request_body = open(os.path.dirname(__file__) + '/fixtures/post_couriers_1.json').read()
+    request_body = open(os.path.dirname(__file__) + "/fixtures/post_couriers_1.json").read()
 
     expected_response_body = {
       "validation_error": {
@@ -21,7 +21,7 @@ class PostCouriersTest(TestCase):
     self.assertEqual(json.loads(response.content), expected_response_body)
 
   def test_renders_http_400_on_any_additional_entries_attributes(self):
-    request_body = open(os.path.dirname(__file__) + '/fixtures/post_couriers_2.json').read()
+    request_body = open(os.path.dirname(__file__) + "/fixtures/post_couriers_2.json").read()
 
     expected_response_body = {
       "validation_error": {
@@ -35,7 +35,7 @@ class PostCouriersTest(TestCase):
     self.assertEqual(json.loads(response.content), expected_response_body)
 
   def test_renders_correct_response_on_valid_request(self):
-    request_body = open(os.path.dirname(__file__) + '/fixtures/post_couriers_3.json').read()
+    request_body = open(os.path.dirname(__file__) + "/fixtures/post_couriers_3.json").read()
 
     expected_response_body = {
       "couriers": [{ "id": 1 }, { "id": 2 }, { "id": 3 }]

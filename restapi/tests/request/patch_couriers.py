@@ -22,7 +22,7 @@ class PatchCouriersTest(TestCase):
     for order in orders: order.save()
 
   def test_marks_rrders_as_unassigned_if_required(self):
-    request_body = open(os.path.dirname(__file__) + '/fixtures/patch_couriers_1.json').read()
+    request_body = open(os.path.dirname(__file__) + "/fixtures/patch_couriers_1.json").read()
     response = self.__do_request(request_body)
 
     expected_response_body = {
@@ -38,7 +38,7 @@ class PatchCouriersTest(TestCase):
 
   def __do_request(self, request_body, courier_id=1):
     return self.client.patch(
-      f'/couriers/{courier_id}',
+      f"/couriers/{courier_id}",
       request_body,
       content_type="application/json"
     )

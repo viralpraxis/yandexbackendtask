@@ -8,7 +8,7 @@ from django.views.decorators.http import require_http_methods
 from restapi.models import Courier
 
 class ShowCourierView(View):
-  http_method_names = ['get']
+  http_method_names = ["get"]
 
   def get(self, request, *args, **kwargs):
     courier = self.__find_courier(kwargs["id"])

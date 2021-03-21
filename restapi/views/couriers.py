@@ -9,14 +9,14 @@ from restapi.models import Courier, Order
 import restapi.helpers as helpers
 
 class CourierView(View):
-  http_method_names = ['post', 'patch']
+  http_method_names = ["post", "patch"]
 
   def post(self, request, *args, **kwargs):
     parsed_request_body = json.loads(request.body)
 
     invalid_entries_ids = self.__validate_post_request_body(parsed_request_body)
     if len(invalid_entries_ids) > 0:
-      return helpers.render_http_400(invalid_entries_ids, 'couriers')
+      return helpers.render_http_400(invalid_entries_ids, "couriers")
 
     created_entries_ids = []
     data = parsed_request_body["data"]
@@ -51,7 +51,7 @@ class CourierView(View):
     return JsonResponse(courier.as_json())
 
   def __validate_post_request_body(self, request_body):
-    entry_fields = ['courier_id', 'courier_type', 'regions', 'working_hours']
+    entry_fields = ["courier_id", "courier_type", "regions", "working_hours"]
     invalid_entries_ids = []
 
     for entry in request_body["data"]:
@@ -64,7 +64,7 @@ class CourierView(View):
     keys = list(request_body.keys())
 
     for key in keys:
-      if key not in ['courier_type', 'regions', 'working_hours']:
+      if key not in ["courier_type", "regions", "working_hours"]:
         return False
 
     return True

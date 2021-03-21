@@ -21,7 +21,7 @@ class Order(models.Model):
   ]
 
   identifier = models.IntegerField()
-  courier = models.ForeignKey('Courier', null=True, on_delete=models.CASCADE)
+  courier = models.ForeignKey("Courier", null=True, on_delete=models.CASCADE)
   weight = models.FloatField()
   region = models.IntegerField()
   delivery_hours = ArrayField(models.CharField(max_length=25))

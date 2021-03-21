@@ -65,7 +65,7 @@ class Courier(models.Model):
 
     min_duration = min(orders_avg_time.values())
 
-    return format((3600 - min(min_duration, 3600)) / 3600 * 5, ".2f")
+    return round((3600 - min(min_duration, 3600)) / 3600 * 5, 2)
 
   def earnings(self):
     return reduce(

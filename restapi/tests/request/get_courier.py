@@ -46,8 +46,8 @@ class GetCourier(TestCase):
       "courier_id": 1,
       "courier_type": "bike",
       "regions": [1, 2, 3],
-      "working_hours": ["10:00-11:00"],
-      "ratings": 2.50,
+      "working_hours": ["00:00-23:59"],
+      "rating": 2.5,
       "earnings": 13500
     }
 

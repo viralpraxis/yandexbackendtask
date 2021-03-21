@@ -7,7 +7,7 @@ from restapi.models import Order
 import restapi.helpers as helpers
 
 class OrderView(View):
-  http_methods_allowed = ["post"]
+  http_method_names = ["post"]
 
   def post(self, request):
     parsed_request_body = json.loads(request.body)

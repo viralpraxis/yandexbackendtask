@@ -8,7 +8,7 @@ from restapi.models import Courier, Order
 import restapi.helpers as helpers
 
 class OrdersCompletionView(View):
-  http_methods_allowed = ["post"]
+  http_method_names = ["post"]
 
   def post(self, request):
     request_body = json.loads(request.body)

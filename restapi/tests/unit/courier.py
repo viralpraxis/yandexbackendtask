@@ -35,7 +35,7 @@ class CourierTest(TestCase):
   def test_courier_has_correct_rating(self):
     courier = Courier.objects.get(identifier=1)
 
-    self.assertEqual(courier.rating(), "2.50")
+    self.assertEqual(courier.rating(), 2.5)
 
   def test_courier_has_correct_earnings(self):
     courier = Courier.objects.get(identifier=1)

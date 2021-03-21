@@ -1,5 +1,10 @@
+import datetime
+from functools import reduce
+
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+
+from restapi.models.order import *
 
 class Courier(models.Model):
   FOOT = "foot"
@@ -17,22 +22,57 @@ class Courier(models.Model):
   regions = ArrayField(models.IntegerField())
   working_hours = ArrayField(models.CharField(max_length=25))
 
+  def completed_orders(self):
+    return Order.objects.filter(courier=self, status=Order.COMPLETED)
+
   def weight_capacity(self):
     if self.category == self.FOOT: return 10
     elif self.category == self.BIKE: return 15
     else: return 50
 
   def rating(self):
-    # TODO: implement logic
-    return 5.0
+    orders_count = {}
+    orders_avg_time = {}
+    orders = self.completed_orders().order_by("completed_at")
+    if len(orders) == 0: return None
+
+    order = orders[0]
+    region = order.region
+    duration = (order.completed_at - order.assigned_at).total_seconds()
+
+    if not region in orders_count:
+      orders_count[region] = 0
+      orders_avg_time[region] = 0
+
+    orders_count[region] += 1
+    orders_avg_time[region] += duration
+
+    for i in range(1, len(orders)):
+      order = orders[i]
+      region = order.region
+      duration = (order.completed_at - orders[i - 1].completed_at).total_seconds()
+      if not region in orders_count:
+        orders_count[region] = 0
+        orders_avg_time[region] = 0
+
+      orders_count[region] += 1
+      orders_avg_time[region] += duration
+
+    # import pdb; pdb.set_trace()
+
+    for region in [*orders_count.keys()]:
+      orders_avg_time[region] /= orders_count[region]
+
+    min_duration = min(orders_avg_time.values())
+
+    return format((3600 - min(min_duration, 3600)) / 3600 * 5, ".2f")
 
   def earnings(self):
-    earnings = 0
-    orders = Order.objects.filter(courier=self, status=Order.COMPLETED)
-
-    for order in orders: earnings = earnings + order.salary()
-
-    return earnings
+    return reduce(
+      lambda acc, order: acc + order.salary(),
+      self.completed_orders(),
+      0
+    )
 
   def order_acceptance(self, order):
     #import pdb; pdb.set_trace()

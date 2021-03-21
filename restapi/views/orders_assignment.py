@@ -1,4 +1,4 @@
-import json
+import json, datetime
 
 from django.http import HttpResponse, JsonResponse
 from django.views import View
@@ -31,7 +31,7 @@ class OrdersAssignmentView(View):
     # TODO: RFC 3339
     response_body = {
       "orders": helpers.format_id_array(orders_ids),
-      "assign_time": "TIME PLACEHOLDER"
+      "assign_time": datetime.datetime.now().isoformat() + "Z"
     }
 
     return JsonResponse(response_body)

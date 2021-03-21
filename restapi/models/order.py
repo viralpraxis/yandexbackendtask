@@ -1,5 +1,9 @@
+import datetime
+
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+
+from restapi.models.courier import *
 
 class Order(models.Model):
   MIN_ACCEPTABLE_WEIGHT = 0.01
@@ -23,20 +27,22 @@ class Order(models.Model):
   delivery_hours = ArrayField(models.CharField(max_length=25))
   status = models.CharField(max_length=25, null=True, choices=STATUS_CHOICES, default=PENDING)
   courier_category = models.CharField(max_length=25, null=True)
-  completed_at = models.CharField(max_length=50, null=True)
+  assigned_at = models.DateTimeField(null=True)
+  completed_at = models.DateTimeField(null=True)
 
   def salary(self):
     return self.DEFAULT_SALARY * self.salary_multiplier()
 
   def salary_multiplier(self):
-    if self.courier_category == Courier.FOOT: return 2
-    elif self.courier_category == Courier.BIKE: return 5
+    if self.courier_category == "foot": return 2
+    elif self.courier_category == "bike": return 5
     else: return 9
 
   def assign_courier(self, courier):
     self.courier = courier
     self.courier_category = courier.category
     self.status = self.ASSIGNED
+    self.assigned_at = datetime.datetime.utcnow().isoformat() + "Z"
 
     self.save()
 
@@ -44,6 +50,7 @@ class Order(models.Model):
     self.courier = None
     self.courier_category = None
     self.status = self.PENDING
+    self.assigned_at = None
 
     self.save()
 

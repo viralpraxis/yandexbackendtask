@@ -41,7 +41,7 @@ class Order(models.Model):
   def assign_courier(self, courier):
     self.courier = courier
     self.courier_category = courier.category
-    self.status = ASSIGNED
+    self.status = self.ASSIGNED
     self.assigned_at = datetime.datetime.utcnow().isoformat() + "Z"
 
     self.save()
@@ -49,13 +49,13 @@ class Order(models.Model):
   def unassign(self):
     self.courier = None
     self.courier_category = None
-    self.status = PENDING
+    self.status = self.PENDING
     self.assigned_at = None
 
     self.save()
 
   def complete(self, completed_at):
-    self.status = COMPLETED
+    self.status = self.COMPLETED
     self.completed_at = completed_at
 
     self.save()

@@ -28,7 +28,9 @@ class CourierView(View):
     return JsonResponse(response_body)
 
   def post(self, request, *args, **kwargs):
-    parsed_request_body = json.loads(request.body)
+    try:
+      parsed_request_body = json.loads(request.body)
+    except json.decoder.JSONDecodeError: return HttpResponse(status=400)
 
     invalid_entries_ids = self.__validate_post_request_body(parsed_request_body)
     if len(invalid_entries_ids) > 0:
@@ -49,7 +51,9 @@ class CourierView(View):
     return helpers.render_http_201(created_entries_ids, "couriers")
 
   def patch(self, request, *args, **kwargs):
-    request_body = json.loads(request.body)
+    try:
+      request_body = json.loads(request.body)
+    except json.decoder.JSONDecodeError: return HttpResponse(status=400)
 
     if not self.__validate_patch_request_body(request_body): return HttpResponse(status=400)
 

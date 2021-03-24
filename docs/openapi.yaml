@@ -205,7 +205,7 @@ components:
                             id:
                                 type: integer
                             errors:
-                                $ref: '#/components/schemas/InvalidEntryErrors'
+                                $ref: '#/components/schemas/InvalidEntryError'
 
                         required:
                           - id

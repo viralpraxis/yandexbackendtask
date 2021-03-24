@@ -55,7 +55,7 @@ class CourierView(View):
       request_body = json.loads(request.body)
     except json.decoder.JSONDecodeError: return HttpResponse(status=400)
 
-    if not self.__validate_patch_request_body(request_body): return HttpResponse(status=400)
+    if not self.__validate_patch_request_body(request_body): return HttpResponse(status=404)
 
     courier = self.__find_courier(kwargs["id"])
     if not courier: return HttpResponse(status=400)

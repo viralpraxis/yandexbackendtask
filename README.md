@@ -6,6 +6,8 @@
 Для эндпоинтов 1 `POST /couriers` и 3 `POST /orders` реализованы дополнительные поля<br>
 в результирующем json-объекте, подробное описание см. в `docs/openapi.yaml` (компонент `InvalidEntryError`)
 
+Корень проекта на виртуальной машине - /home/entrant/dev/sweetdelivery/production
+
 ## Локальное развертывание
 
 Необходимо установить копию репозитория и выполнить установку зависимостей:<br> `pip3 install -r requirements.txt`

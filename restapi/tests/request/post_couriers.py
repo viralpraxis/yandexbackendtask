@@ -11,12 +11,32 @@ class PostCouriersTest(TestCase):
 
     expected_response_body = {
       "validation_error": {
-        "couriers": [{ "id": 1 }, { "id": 3}]
+        "couriers": [
+          {
+            "id": 1,
+            "errors": [
+              {
+                "attribute": "working_hours",
+                "message": "missing required attribute"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "errors": [
+              {
+                "attribute": "courier_type",
+                "message": "missing required attribute"
+              }
+            ]
+          }
+        ]
       }
     }
 
     response = self.__do_request(request_body)
 
+    # import pdb; pdb.set_trace()
     self.assertEqual(response.status_code, 400)
     self.assertEqual(json.loads(response.content), expected_response_body)
 
@@ -25,7 +45,17 @@ class PostCouriersTest(TestCase):
 
     expected_response_body = {
       "validation_error": {
-        "couriers": [{ "id": 3 }]
+        "couriers": [
+          {
+            "id": 3,
+            "errors": [
+              {
+                "attribute": "additional_attribute",
+                "message": "unexpected attribute"
+              }
+            ]
+          }
+        ]
       }
     }
 

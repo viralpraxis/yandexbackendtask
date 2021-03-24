@@ -32,9 +32,9 @@ class CourierView(View):
       parsed_request_body = json.loads(request.body)
     except json.decoder.JSONDecodeError: return HttpResponse(status=400)
 
-    invalid_entries_ids = self.__validate_post_request_body(parsed_request_body)
-    if len(invalid_entries_ids) > 0:
-      return helpers.render_http_400(invalid_entries_ids, "couriers")
+    validation_result = self.__validate_post_request_body(parsed_request_body)
+    if len(validation_result):
+      return helpers.render_http_400(validation_result, "couriers")
 
     created_entries_ids = []
     data = parsed_request_body["data"]
@@ -79,14 +79,11 @@ class CourierView(View):
       pass
 
   def __validate_post_request_body(self, request_body):
-    entry_fields = ["courier_id", "courier_type", "regions", "working_hours"]
-    invalid_entries_ids = []
-
-    for entry in request_body["data"]:
-      if list(entry.keys()) != entry_fields:
-        invalid_entries_ids.append(entry["courier_id"])
-
-    return invalid_entries_ids
+    return helpers.validate_collection(
+      request_body["data"],
+      "courier_id",
+      required_attrs=["courier_id", "courier_type", "regions", "working_hours"]
+    )
 
   def __validate_patch_request_body(self, request_body):
     keys = list(request_body.keys())

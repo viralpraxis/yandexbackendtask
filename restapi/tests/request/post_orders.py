@@ -13,7 +13,26 @@ class PostOrdersTest(TestCase):
 
     expected_response_body = {
       "validation_error": {
-        "orders": [{ "id": 2 }, { "id": 3 }]
+        "orders": [
+          {
+            "id": 2,
+            "errors": [
+              {
+                "attribute": "weight",
+                "message": "missing required attribute"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "errors": [
+              {
+                "attribute": "weight",
+                "message": "invalid weight value"
+              }
+            ]
+          }
+        ]
       }
     }
 
@@ -26,7 +45,17 @@ class PostOrdersTest(TestCase):
 
     expected_response_body = {
       "validation_error": {
-        "orders": [{ "id": 1 }]
+        "orders": [
+          { 
+            "id": 1,
+            "errors": [
+              {
+                "attribute": "sex",
+                "message": "unexpected attribute"
+              }
+            ]
+          }
+        ]
       }
     }
 

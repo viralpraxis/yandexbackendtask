@@ -22,7 +22,13 @@
          ]
       },
       {
-         "courier_id":3
+         "courier_id":3,
+         "working_hours": [
+            "10:10-10:11"
+         ],
+         "regions": [
+           100
+         ]
       }
    ]
 }

@@ -13,8 +13,9 @@
     },
     {
       "order_id": 3,
-      "weight": 0.23,
-      "region": 12
+      "weight": 0.001,
+      "region": 12,
+      "delivery_hours": ["09:00-18:00"]
     }
   ]
 }

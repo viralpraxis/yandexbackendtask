@@ -204,8 +204,12 @@ components:
                         properties:
                             id:
                                 type: integer
+                            errors:
+                                $ref: '#/components/schemas/InvalidEntryErrors'
+
                         required:
                           - id
+                          - errors
             required:
               - couriers
 
@@ -319,8 +323,13 @@ components:
                         properties:
                             id:
                                 type: integer
+                            errors:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/InvalidEntryError'
                         required:
                           - id
+                          - errors
             required:
               - orders
 
@@ -365,3 +374,17 @@ components:
                     type: integer
             required:
               - order_id
+
+        InvalidEntryError:
+            type: object
+            additionalProperties: false
+            properties:
+                attribute:
+                    type: string
+                    example: weight
+                message:
+                    type: string
+                    example: unexpected attribute
+            required:
+                - attribute
+                - message

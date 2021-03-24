@@ -33,20 +33,17 @@ class OrderView(View):
     return helpers.render_http_201(created_entries_ids, "orders")
 
   def __validate_post_request_body(self, request_body):
-    invalid_entries_ids = []
+    def validate_weight(entry):
+      if not "weight" in entry: return []
 
-    for entry in request_body["data"]:
-      if not self.__ensure_entry_validity(entry):
-        invalid_entries_ids.append(entry["order_id"])
+      if entry["weight"] > Order.MAX_ACCEPTABLE_WEIGHT or entry["weight"] < Order.MIN_ACCEPTABLE_WEIGHT:
+        return [ { "attribute": "weight", "message": "invalid weight value" }]
 
-    return invalid_entries_ids
+      return []
 
-  def __ensure_entry_validity(self, entry):
-    entry_fields = ["order_id", "weight", "region", "delivery_hours"]
-
-    if list(entry.keys()) != entry_fields: return False
-    if entry["weight"] > Order.MAX_ACCEPTABLE_WEIGHT or entry["weight"] < Order.MIN_ACCEPTABLE_WEIGHT:
-      return False
-
-    return True
-
+    return helpers.validate_collection(
+      request_body["data"],
+      "order_id",
+      required_attrs=["order_id", "weight", "region", "delivery_hours"],
+      custom_validator=validate_weight
+    )

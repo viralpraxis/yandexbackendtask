@@ -79,10 +79,10 @@ WSGI_APPLICATION = 'sweetdelivery.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django_db',
-        'USER': 'django',
-        'PASSWORD': 'django',
-        'HOST': '127.0.0.1',
+        'NAME': '[DATABASE_NAME]',
+        'USER': '[DJANGO_USER]',
+        'PASSWORD': '[PASSWORD]',
+        'HOST': '[HOST]',
         'PORT': '5432'
     }
 }
